@@ -572,7 +572,6 @@ func (txn *Txn) Commit(callback func(error)) error {
 }
 
 // Clone returns a new transaction in read mode with the same read timestamp.
-// It can be convenient for concurrent iterators access.
 func (txn *Txn) Clone() *Txn {
 	clone := txn.db.NewTransaction(false)
 	clone.readTs = txn.readTs
