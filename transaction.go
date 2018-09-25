@@ -571,6 +571,14 @@ func (txn *Txn) Commit(callback func(error)) error {
 	return nil
 }
 
+// Clone returns a new transaction in read mode with the same read timestamp.
+// It can be convenient for concurrent iterators access.
+func (txn *Txn) Clone() *Txn {
+	clone := txn.db.NewTransaction(false)
+	clone.readTs = txn.readTs
+	return clone
+}
+
 // NewTransaction creates a new transaction. Badger supports concurrent execution of transactions,
 // providing serializable snapshot isolation, avoiding write skews. Badger achieves this by tracking
 // the keys read and at Commit time, ensuring that these read keys weren't concurrently modified by
